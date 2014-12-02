@@ -13,6 +13,11 @@ public class PasswordCrack {
 	private static BufferedReader passwords;
     private static ArrayList<String> wordList;
 
+    private static char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    private static char[] upcaseAlphabet = {'A', 'B', 'C', 'C', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    private static char[] numbers = {'0', '1', '2', '3', '4','5', '6', '7', '8', '9'};
+    private static char[] specialCharacters = {'!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '~', '`', '{', '}', '[', ']', '|', '?', '>', '<', '.', ',', '/', '\\' };
+
 
 	public static void main(String[] args) {
 		try{
@@ -174,6 +179,46 @@ public class PasswordCrack {
         //System.out.println("Trying password: " + password);
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
+
+        //prepend and append character
+        for (int i = 0; i < alphabet.length; i++){
+            password = Character.toString(alphabet[i]) + word.toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+            password = word.toLowerCase() + Character.toString(alphabet[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //prepend and append uppercase character
+        for (int i = 0; i < upcaseAlphabet.length; i++){
+            password = Character.toString(upcaseAlphabet[i]) + word.toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+            password = word.toLowerCase() + Character.toString(upcaseAlphabet[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //prepend and append numbers
+        for (int i = 0; i < numbers.length; i++){
+            password = Character.toString(numbers[i]) + word.toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+            password = word.toLowerCase() + Character.toString(numbers[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //prepend and append special characters
+        for (int i = 0; i < specialCharacters.length; i++){
+            password = Character.toString(specialCharacters[i]) + word.toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+            password = word.toLowerCase() + Character.toString(specialCharacters[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
 
         return null;
     }
