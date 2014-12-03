@@ -99,8 +99,75 @@ public class PasswordCrack {
             }
         }
 
+        //Try two first name words
+        if((password = crack(firstName, firstName, salt, encryptedPassword)) != null){
+            System.out.println("Password for " + firstName + " is " + password);
+            return true;
+        }
+
+        //Try two last name words
+        if((password = crack(lastName, lastName, salt, encryptedPassword)) != null){
+            System.out.println("Password for " + firstName + " is " + password);
+            return true;
+        }
+
+        //Try all two combination words from word list
+        for(String word1 : wordList){
+            for(String word2: wordList){
+                if((password = crack(word1, word2, salt, encryptedPassword)) != null){
+                    System.out.println("Password for " + firstName + " is " + password);
+                    return true;
+                }
+            }
+        }
+
         System.out.println("Could not crack the password for " + firstName);
         return false;
+    }
+
+    public static String crack(String word1, String word2, String salt, String encryptedPassword){
+
+        //word1 + word2
+        String password = word1 + word2;
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word2 + word1
+        password = word2 + word1;
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word1.reverse + word2
+        password = reverseWord(word1) + word2;
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word1 + word2.reverse
+        password = word1 + reverseWord(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word2.reverse + word1
+        password = reverseWord(word2) + word1;
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word2 + word1.reverse
+        password = word2 + reverseWord(word1);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word1.reverse + word2.reverse
+        password = reverseWord(word1) + reverseWord(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word2.reverse + word1.reverse
+        password = reverseWord(word2) + reverseWord(word1);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        return null;
     }
 
     public static String crack(String word, String salt, String encryptedPassword){
@@ -112,9 +179,10 @@ public class PasswordCrack {
             return password;
 
         //reverse word
+        password = reverseWord(word);
         //System.out.println("Trying password: " + new StringBuilder(word).reverse().toString());
-        if(jcrypt.crypt(salt, new StringBuilder(word).reverse().toString().toLowerCase()).equals(encryptedPassword))
-            return new StringBuilder(word).reverse().toString().toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
 
         //capitalize the word
         password = word.toUpperCase();
@@ -149,33 +217,19 @@ public class PasswordCrack {
         }
 
         //ncapitalize the word
-        password = word.substring(0, 1).toLowerCase() + word.substring(1).toUpperCase();
+        password = nCapitalize(word);
         //System.out.println("Trying password: " + password);
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
 
         //toggle case1
-        password = "";
-        for(int i = 0; i < word.length(); i++){
-            if (i % 2 == 0){
-                password += word.substring(i, i+1).toUpperCase();
-            }else{
-                password += word.substring(i, i+1).toLowerCase();
-            }
-        }
+        password = toggle1(word);
         //System.out.println("Trying password: " + password);
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
 
         //toggle case 2
-        password = "";
-        for(int i = 0; i < word.length(); i++){
-            if (i % 2 == 0){
-                password += word.substring(i, i+1).toLowerCase();
-            }else{
-                password += word.substring(i, i+1).toUpperCase();
-            }
-        }
+        password = toggle2(word);
         //System.out.println("Trying password: " + password);
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
@@ -222,5 +276,39 @@ public class PasswordCrack {
 
         return null;
     }
+
+    public static String reverseWord(String word){
+        return new StringBuilder(word).reverse().toString().toLowerCase();
+    }
+
+    public static String nCapitalize(String word){
+        return word.substring(0, 1).toLowerCase() + word.substring(1).toUpperCase();
+    }
+
+    public static String toggle1(String word){
+        String password = "";
+        for(int i = 0; i < word.length(); i++){
+            if (i % 2 == 0){
+                password += word.substring(i, i+1).toUpperCase();
+            }else{
+                password += word.substring(i, i+1).toLowerCase();
+            }
+        }
+        return password;
+    }
+
+    public static String toggle2(String word){
+        String password = "";
+        for(int i = 0; i < word.length(); i++){
+            if (i % 2 == 0){
+                password += word.substring(i, i+1).toLowerCase();
+            }else{
+                password += word.substring(i, i+1).toUpperCase();
+            }
+        }
+        return password;
+    }
+
+
 
 }
