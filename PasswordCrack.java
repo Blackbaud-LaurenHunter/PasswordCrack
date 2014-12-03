@@ -97,6 +97,11 @@ public class PasswordCrack {
                 System.out.println("Password for " + firstName + " is " + password);
                 return true;
             }
+            // try crack method on reverse of the word itself
+            if((password = crack(reverseWord(word), salt, encryptedPassword)) != null){
+                System.out.println("Password for " + firstName + " is " + password);
+                return true;
+            }
         }
 
         //Try two first name words
@@ -167,6 +172,100 @@ public class PasswordCrack {
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
 
+        //word1.reverse + first character of word2
+        password = reverseWord(word1) + word2.substring(0, 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = reverseWord(word1) + word2.substring(0, 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //first character of word1 + word2.reverse
+        password = word1.substring(0, 1).toLowerCase() + reverseWord(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.substring(0, 1).toUpperCase() + reverseWord(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //word2.reverse + first character of word1
+        password = reverseWord(word2) + word1.substring(0, 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = reverseWord(word2) + word1.substring(0, 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //first character of word2 + word1.reverse
+        password = word2.substring(0, 1).toLowerCase() + reverseWord(word1);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word2.substring(0, 1).toUpperCase() + reverseWord(word1);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+
+        //word1 + firt character of word 2
+        password = word1.toLowerCase() + word2.substring(0, 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.toLowerCase() + word2.substring(0, 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.toUpperCase() + word2.substring(0, 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.toUpperCase() + word2.substring(0, 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //first character of word 1 + word2
+        password = word1.substring(0, 1).toLowerCase() + word2.toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.substring(0, 1).toUpperCase() + word2.toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.substring(0, 1).toLowerCase() + word2.toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.substring(0, 1).toUpperCase() + word2.toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        // word1.ncapitalize + word2
+        password = nCapitalize(word1) + word2.toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = nCapitalize(word1) + word2.toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        // word1.ncapitalize + first character of word2
+        password = nCapitalize(word1) + word2.substring(0, 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = nCapitalize(word1) + word2.substring(0, 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        // word1 + word2.ncapitalize
+        password = word1.toLowerCase() + nCapitalize(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.toUpperCase() + nCapitalize(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        // first character of word1 + word2.ncapitalize
+        password = word1.substring(0, 1).toLowerCase() + nCapitalize(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word1.substring(0,1).toUpperCase() + nCapitalize(word2);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+
         return null;
     }
 
@@ -175,6 +274,46 @@ public class PasswordCrack {
 
         //try just the word
         //System.out.println("Trying password: " + password);
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //remove last character
+        password = word.substring(0, word.length() - 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, 1).toUpperCase() + password.substring(1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, password.length() - 1).toLowerCase() + password.substring(password.length() - 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word.substring(0, word.length() - 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, 1).toLowerCase() + password.substring(1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, password.length() - 1).toUpperCase() + password.substring(password.length() - 1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+
+        //remove first character
+        password = word.substring(1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, 1).toUpperCase() + password.substring(1).toLowerCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, password.length() - 1).toLowerCase() + password.substring(password.length() - 1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = word.substring(1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, 1).toLowerCase() + password.substring(1).toUpperCase();
+        if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+            return password;
+        password = password.substring(0, password.length() - 1).toUpperCase() + password.substring(password.length() - 1).toLowerCase();
         if(jcrypt.crypt(salt, password).equals(encryptedPassword))
             return password;
 
@@ -270,6 +409,34 @@ public class PasswordCrack {
             if(jcrypt.crypt(salt, password).equals(encryptedPassword))
                 return password;
             password = word.toLowerCase() + Character.toString(specialCharacters[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //replace first character with a special character
+        for(int i = 0; i < specialCharacters.length; i++){
+            password = Character.toString(specialCharacters[i]) + word.substring(1).toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //replace last character with a special character
+        for(int i = 0; i < specialCharacters.length; i++){
+            password = word.substring(0, word.length() - 1).toLowerCase() + Character.toString(specialCharacters[i]);
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //replace first character with a number
+        for(int i = 0; i < numbers.length; i++){
+            password = Character.toString(numbers[i]) + word.substring(1).toLowerCase();
+            if(jcrypt.crypt(salt, password).equals(encryptedPassword))
+                return password;
+        }
+
+        //replace last character with a number
+        for(int i = 0; i < numbers.length; i++){
+            password = word.substring(0, word.length() - 1).toLowerCase() + Character.toString(numbers[i]);
             if(jcrypt.crypt(salt, password).equals(encryptedPassword))
                 return password;
         }
