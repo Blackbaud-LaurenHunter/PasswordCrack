@@ -7,6 +7,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Timer;
 
 
 public class PasswordCrack {
@@ -15,6 +16,8 @@ public class PasswordCrack {
 	private static BufferedReader passwords;
     private static ArrayList<String> wordList;
     private static ArrayList<User> userList;
+    private static long startTime;
+    private static long endTime;
 
     private static char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
     private static char[] upcaseAlphabet = {'A', 'B', 'C', 'C', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -53,7 +56,7 @@ public class PasswordCrack {
 
     public static void crackPasswords() throws IOException{
         System.out.println("Cracking Passwords");
-
+        startTime = System.currentTimeMillis();
         //Try all first and last names
         for(Iterator<User> it = userList.iterator(); it.hasNext(); ){
             User usr = it.next();
@@ -492,7 +495,9 @@ public class PasswordCrack {
     public static int tryPassword(String password){
         for(int i = 0; i < userList.size(); i++){
             if(jcrypt.crypt(userList.get(i).salt, password).equals(userList.get(i).encryptedPassword)){
-                System.out.println("Password for " + userList.get(i).firstName + " is " + password);
+                endTime = System.currentTimeMillis();
+                System.out.println("Password for " + userList.get(i).firstName + " is " + password + " with encryptedPassword " + userList.get(i).encryptedPassword);
+                System.out.println("Found in "+ (endTime - startTime) * .001 + " seconds ");
                 return i;
             }
         }
